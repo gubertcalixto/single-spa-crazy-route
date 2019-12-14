@@ -1,0 +1,14 @@
+html,
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+button:not(.error_button) {
+  padding: 2px 6px;
+  margin: 2px 4px;
+}
+.error_button {
+  border: 1px solid red;
+  font-weight: bolder;
+  background-color: #ffffff;
+}

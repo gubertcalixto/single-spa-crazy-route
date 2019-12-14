@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- #region MetaTags -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- #endregion MetaTags -->
+
+    <!-- #region SingleSPA -->
+    <script src="https://unpkg.com/zone.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/4.0.0/system.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/4.0.0/extras/amd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/4.0.0/extras/named-exports.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/4.0.0/extras/named-register.min.js"></script>
+    <!-- #endregion SingleSPA -->
+
+    <title>Loader test</title>
+    <base href="/">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body>
+    <script>
+        /** Get seconds between dates */
+        const diffInSeconds = (dt2, dt1) => Math.abs(Math.round((dt2.getTime() - dt1.getTime()) / 1000));
+        /** Seconds between crazy route verification */
+        const secondsToWatch = 5; // seconds
+        /** Times during (secondsToWatch) to check if crazy route occured */
+        const timesToError = 15;
+
+        /** variable to get how many times verification occured in during period */
+        let verificationTimesDuringPeriod = 0;
+        /** last time that verification occured off during period */
+        let lastVerificationTime = new Date();
+
+        // System.import('https://cdnjs.cloudflare.com/ajax/libs/single-spa/4.3.5/system/single-spa.min.js').then((singleSpa) => {
+        System.import('/single-spa.dev.js').then((singleSpa) => {
+            if (!singleSpa) {
+                throw new Error('singleSpa couldn\'t be loaded');
+            }
+            singleSpa.registerApplication(
+                'test-app',
+                () => System.import('http://localhost:4201/main.js'),
+                () => {
+                    if (diffInSeconds(new Date(), lastVerificationTime) <= secondsToWatch) {
+                        verificationTimesDuringPeriod++;
+                        if (verificationTimesDuringPeriod >= timesToError) {
+                            console.warn('-------- || --------');
+                            console.error('crazyRoute');
+                            console.warn('-------- || --------');
+                        }
+                    } else {
+                        verificationTimesDuringPeriod = 0;
+                        lastVerificationTime = new Date();
+                    }
+                    return true;
+                }
+            );
+            singleSpa.start();
+        });
+    </script>
+</body>
+
+</html>
