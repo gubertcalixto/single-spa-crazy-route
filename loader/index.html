@@ -35,8 +35,8 @@
         /** last time that verification occured off during period */
         let lastVerificationTime = new Date();
 
-        // System.import('https://cdnjs.cloudflare.com/ajax/libs/single-spa/4.3.5/system/single-spa.min.js').then((singleSpa) => {
-        System.import('/single-spa.dev.js').then((singleSpa) => {
+        System.import('https://cdnjs.cloudflare.com/ajax/libs/single-spa/4.3.5/system/single-spa.min.js').then((singleSpa) => {
+            // System.import('/single-spa.dev.js').then((singleSpa) => {
             if (!singleSpa) {
                 throw new Error('singleSpa couldn\'t be loaded');
             }
