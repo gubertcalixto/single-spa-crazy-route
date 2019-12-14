@@ -1,5 +1,5 @@
 {
-  "name": "korp-portal",
+  "name": "loader-spa",
   "version": "0.0.0",
   "scripts": {
     "start": "webpack-dev-server --open",
